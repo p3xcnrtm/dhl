@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simple Live Tracker (10% Progress)</title>
+
+<!-- Include Leaflet -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  html, body { height: 100%; margin: 0; }
+  #map { height: 100%; width: 100%; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+  // Coordinates: Syria → Springfield
+  const start = [33.5138, 36.2765];     // Damascus
+  const end   = [37.2089, -93.2923];    // Springfield, Missouri
+
+  // Create map
+  const map = L.map('map').setView(start, 3);
+
+  // Add OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Draw route line
+  const route = L.polyline([start, end], { color: 'red', weight: 3 }).addTo(map);
+  map.fitBounds(route.getBounds());
+
+  // Create moving marker
+  const marker = L.marker(start).addTo(map).bindPopup('Package departing Damascus').openPopup();
+
+  // Animate: move to 10% progress
+  let t = 0;
+  const stopPoint = 0.1; // 10%
+
+  function animate() {
+    if (t <= stopPoint) {
+      const lat = start[0] + (end[0] - start[0]) * t;
+      const lng = start[1] + (end[1] - start[1]) * t;
+      marker.setLatLng([lat, lng]);
+      t += 0.002; // speed — lower = slower
+      requestAnimationFrame(animate);
+    } else {
+      marker.bindPopup('📦 Package currently in transit (10% complete)').openPopup();
+    }
+  }
+
+  animate();
+</script>
+
+</body>
+</html>
