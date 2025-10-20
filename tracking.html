@@ -2885,61 +2885,66 @@
     
 </div>
 <!-- Mini Map -->
-<div class="c-tracking-map">
+  <div class="c-tracking-map">
     <h3 class="c-tracking-map-heading">Package Location</h3>
     <div id="map"></div>
+  </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-// Coordinates: Damascus → Springfield
-const pathCoords = [
-  [33.5138, 36.2765],   // Damascus, Syria
-  [36.2048, 37.1343],   // Northern Syria
-  [39.7392, -104.9903], // Denver waypoint
-  [37.208957, -93.292299] // Springfield, Missouri
-];
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Coordinates: Damascus → Springfield
+    const pathCoords = [
+      [33.5138, 36.2765],   // Damascus, Syria
+      [36.2048, 37.1343],   // Northern Syria
+      [39.7392, -104.9903], // Denver waypoint
+      [37.208957, -93.292299] // Springfield, Missouri
+    ];
 
-let map = L.map('map').setView(pathCoords[0], 4);
+    // Initialize map
+    const map = L.map('map').setView(pathCoords[0], 4);
 
-// Add OpenStreetMap tiles (no key needed)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
+    // Add OpenStreetMap tiles (no key needed)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-// Draw route line
-const route = L.polyline(pathCoords, { color: '#D40511', weight: 4 }).addTo(map);
-map.fitBounds(route.getBounds());
+    // Draw route line
+    const route = L.polyline(pathCoords, { color: '#D40511', weight: 4 }).addTo(map);
+    map.fitBounds(route.getBounds());
 
-// Package marker
-const marker = L.marker(pathCoords[0]).addTo(map).bindPopup("Package in transit").openPopup();
+    // Package marker
+    const marker = L.marker(pathCoords[0])
+      .addTo(map)
+      .bindPopup("Package in transit")
+      .openPopup();
 
-// Animate movement along path
-let step = 0;
-function moveMarker() {
-  if (step < pathCoords.length - 1) {
-    let [lat1, lng1] = pathCoords[step];
-    let [lat2, lng2] = pathCoords[step + 1];
-    let t = 0;
-    const interval = setInterval(() => {
-      if (t >= 1) {
-        clearInterval(interval);
-        step++;
-        moveMarker();
-      } else {
-        const lat = lat1 + (lat2 - lat1) * t;
-        const lng = lng1 + (lng2 - lng1) * t;
-        marker.setLatLng([lat, lng]);
-        map.panTo([lat, lng], { animate: true });
-        t += 0.02; // speed
+    // Animate marker along path
+    let step = 0;
+    function moveMarker() {
+      if (step < pathCoords.length - 1) {
+        let [lat1, lng1] = pathCoords[step];
+        let [lat2, lng2] = pathCoords[step + 1];
+        let t = 0;
+        const interval = setInterval(() => {
+          if (t >= 1) {
+            clearInterval(interval);
+            step++;
+            moveMarker();
+          } else {
+            const lat = lat1 + (lat2 - lat1) * t;
+            const lng = lng1 + (lng2 - lng1) * t;
+            marker.setLatLng([lat, lng]);
+            map.panTo([lat, lng], { animate: true });
+            t += 0.02; // speed
+          }
+        }, 300);
       }
-    }, 300);
-  }
-}
-moveMarker();
-</script>
-</div>
+    }
+
+    moveMarker();
+  </script>
 
 <!-- Package Picture -->
 <div class="c-tracking-package-picture">
