@@ -2790,9 +2790,6 @@
               placeholder="Enter your tracking number"
               required
             >
-            <label class="c-voc-tracking-bar--element-label" for="trackingInput">
-              Enter your tracking number(s)
-            </label>
             <button 
               class="c-voc-tracking-bar--button js--tracking-bar--button base-button"
               type="button"
@@ -2808,20 +2805,65 @@
   </div>
 </div>
 
+<style>
+  /* Layout container */
+  .c-voc-tracking-bar--input-inner-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* Input styling */
+  .c-voc-tracking-bar--input {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  /* Button styling */
+  .c-voc-tracking-bar--button {
+    padding: 12px 18px;
+    font-size: 16px;
+    background-color: #d40511; /* DHL red */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .c-voc-tracking-bar--button:hover {
+    background-color: #b1040e;
+  }
+
+  /* ✅ Mobile fix */
+  @media (max-width: 600px) {
+    .c-voc-tracking-bar--input-inner-group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .c-voc-tracking-bar--button {
+      width: 100%;
+    }
+  }
+</style>
+
 <script>
 function checkTracking() {
   const input = document.getElementById('trackingInput').value.trim();
   const message = document.getElementById('trackingMessage');
   
   if (input === '3SBCC222123456') {
-    // redirect to tracking page
     window.location.href = 'tracking.html';
   } else {
-    // show error
     message.textContent = 'Tracking failed. Please check your number and try again.';
   }
 }
 </script>
+
 
 
  </div>
