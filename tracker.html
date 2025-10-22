@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Simple Live Tracker (10% Progress)</title>
+<title>Simple Live Tracker (25% Progress)</title>
 
 <!-- Include Leaflet -->
 <link
@@ -42,7 +42,7 @@
   // Create moving marker
   const marker = L.marker(start).addTo(map).bindPopup('Package departing Damascus').openPopup();
 
-  // Animate: move to 10% progress
+  // Animate: move to 25% progress
   let t = 0;
   const stopPoint = 0.25; // 25%
 
@@ -54,7 +54,7 @@
       t += 0.002; // speed — lower = slower
       requestAnimationFrame(animate);
     } else {
-      marker.bindPopup('📦 Package currently in transit (10% complete)').openPopup();
+      marker.bindPopup('📦 Package currently in transit (25% complete)').openPopup();
     }
   }
 
